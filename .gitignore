@@ -1,0 +1,45 @@
+# Unreal Engine temporary directories
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# IDE and Project files
+.vscode/
+.idea/
+*.xcodeproj
+*.xcworkspace
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# Native C++ build directories
+build/
+CMakeFiles/
+CMakeCache.txt
+*.o
+*.obj
+*.dylib
+*.so
+*.dll
+*.a
+*.lib
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
