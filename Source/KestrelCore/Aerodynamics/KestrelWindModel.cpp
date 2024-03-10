@@ -3,6 +3,9 @@
 
 namespace Kestrel {
 
+KestrelWindModel::KestrelWindModel()
+    : KestrelWindModel(WindParameters()) {}
+
 KestrelWindModel::KestrelWindModel(const WindParameters& inParams)
     : params(inParams)
     , rng(inParams.randomSeed)

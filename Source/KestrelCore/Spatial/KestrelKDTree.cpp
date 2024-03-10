@@ -123,9 +123,14 @@ std::vector<KDPoint> KestrelKDTree::FindKNearest(const Vector3& query, size_t k)
     std::vector<KDPoint> results;
     if (!root || k == 0) return results;
 
-    // Use max-heap of pairs (distanceSq, KDPoint)
-    using Element = std::pair<double, KDPoint>;
-    std::priority_queue<Element> pq;
+    struct HeapElement {
+        double distSq;
+        KDPoint point;
+        bool operator<(const HeapElement& o) const {
+            return distSq < o.distSq;
+        }
+    };
+    std::priority_queue<HeapElement> pq;
 
     std::function<void(const KDNode*)> search = [&](const KDNode* node) {
         if (!node) return;
@@ -133,7 +138,7 @@ std::vector<KDPoint> KestrelKDTree::FindKNearest(const Vector3& query, size_t k)
         double dSq = (node->point.position - query).NormSq();
         if (pq.size() < k) {
             pq.push({dSq, node->point});
-        } else if (dSq < pq.top().first) {
+        } else if (dSq < pq.top().distSq) {
             pq.pop();
             pq.push({dSq, node->point});
         }
@@ -148,7 +153,7 @@ std::vector<KDPoint> KestrelKDTree::FindKNearest(const Vector3& query, size_t k)
 
         search(first);
 
-        double maxDist = pq.size() < k ? 1e30 : pq.top().first;
+        double maxDist = pq.size() < k ? 1e30 : pq.top().distSq;
         if (delta * delta < maxDist) {
             search(second);
         }
@@ -157,7 +162,7 @@ std::vector<KDPoint> KestrelKDTree::FindKNearest(const Vector3& query, size_t k)
     search(root.get());
 
     while (!pq.empty()) {
-        results.push_back(pq.top().second);
+        results.push_back(pq.top().point);
         pq.pop();
     }
     std::reverse(results.begin(), results.end());

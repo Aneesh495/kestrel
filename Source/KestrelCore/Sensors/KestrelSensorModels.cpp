@@ -3,6 +3,9 @@
 
 namespace Kestrel {
 
+KestrelSensorModels::KestrelSensorModels()
+    : KestrelSensorModels(SensorSuiteConfig()) {}
+
 KestrelSensorModels::KestrelSensorModels(const SensorSuiteConfig& config)
     : cfg(config)
     , gyroNoiseModel(config.gyroNoise, 101)

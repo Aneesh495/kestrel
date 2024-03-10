@@ -5,6 +5,16 @@
 
 namespace Kestrel {
 
+struct WindParameters {
+    Vector3 baseWindVelocity{2.0, 1.0, 0.0}; // Steady wind vector (m/s)
+    double referenceAltitude{10.0};           // Anemometer reference height (m)
+    double shearExponent{0.14};               // Terrain wind shear power coefficient (alpha)
+    double turbulenceIntensity{0.15};         // Turbulence intensity (sigma / V)
+    double gustAmplitude{8.0};                // Discrete gust peak velocity (m/s)
+    double gustLength{40.0};                  // Discrete gust half-wavelength (m)
+    uint32_t randomSeed{42};
+};
+
 /**
  * Atmospheric Wind and Turbulence Generation Engine.
  * Implements MIL-F-8785C / FAA discrete 1-cosine gusts, atmospheric power-law boundary layer shear,
@@ -12,17 +22,8 @@ namespace Kestrel {
  */
 class KestrelWindModel {
 public:
-    struct WindParameters {
-        Vector3 baseWindVelocity{2.0, 1.0, 0.0}; // Steady wind vector (m/s)
-        double referenceAltitude{10.0};           // Anemometer reference height (m)
-        double shearExponent{0.14};               // Terrain wind shear power coefficient (alpha)
-        double turbulenceIntensity{0.15};         // Turbulence intensity (sigma / V)
-        double gustAmplitude{8.0};                // Discrete gust peak velocity (m/s)
-        double gustLength{40.0};                  // Discrete gust half-wavelength (m)
-        uint32_t randomSeed{42};
-    };
-
-    explicit KestrelWindModel(const WindParameters& inParams = WindParameters());
+    KestrelWindModel();
+    explicit KestrelWindModel(const WindParameters& inParams);
 
     /**
      * Resets turbulence filters and random seed.

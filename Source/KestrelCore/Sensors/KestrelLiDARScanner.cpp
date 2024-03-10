@@ -3,7 +3,10 @@
 
 namespace Kestrel {
 
-KestrelLiDARScanner::KestrelLiDARScanner(const Config& inConfig)
+KestrelLiDARScanner::KestrelLiDARScanner()
+    : KestrelLiDARScanner(LiDARScannerConfig()) {}
+
+KestrelLiDARScanner::KestrelLiDARScanner(const LiDARScannerConfig& inConfig)
     : cfg(inConfig)
     , rng(inConfig.seed)
 {

@@ -3,6 +3,9 @@
 
 namespace Kestrel {
 
+KestrelBladeElement::KestrelBladeElement()
+    : KestrelBladeElement(PropellerGeometry()) {}
+
 KestrelBladeElement::KestrelBladeElement(const PropellerGeometry& inGeom)
     : geom(inGeom)
     , diskArea(PI * inGeom.radius * inGeom.radius) {}

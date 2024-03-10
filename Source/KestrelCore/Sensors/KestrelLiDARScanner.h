@@ -15,6 +15,17 @@ struct LiDARPoint {
     int beamId{0};                       // Vertical channel laser index
 };
 
+struct LiDARScannerConfig {
+    int verticalBeams{16};               // Number of vertical elevation channels
+    double fovVerticalMinDeg{-15.0};     // Lower elevation boundary (deg)
+    double fovVerticalMaxDeg{15.0};      // Upper elevation boundary (deg)
+    int horizontalPointsPerScan{360};    // Azimuthal resolution (1 deg steps)
+    double minRangeMeters{0.2};          // Blind zone threshold (m)
+    double maxRangeMeters{60.0};         // Maximum laser range (m)
+    double rangeNoiseStdDev{0.015};      // Gaussian distance measurement error (m)
+    uint32_t seed{404};
+};
+
 /**
  * 3D Multi-Beam LiDAR Sensor Simulator.
  * Simulates mechanical spinning or solid-state LiDAR raycast scans against
@@ -22,18 +33,8 @@ struct LiDARPoint {
  */
 class KestrelLiDARScanner {
 public:
-    struct Config {
-        int verticalBeams{16};               // Number of vertical elevation channels
-        double fovVerticalMinDeg{-15.0};     // Lower elevation boundary (deg)
-        double fovVerticalMaxDeg{15.0};      // Upper elevation boundary (deg)
-        int horizontalPointsPerScan{360};    // Azimuthal resolution (1 deg steps)
-        double minRangeMeters{0.2};          // Blind zone threshold (m)
-        double maxRangeMeters{60.0};         // Maximum laser range (m)
-        double rangeNoiseStdDev{0.015};      // Gaussian distance measurement error (m)
-        uint32_t seed{404};
-    };
-
-    explicit KestrelLiDARScanner(const Config& inConfig = Config());
+    KestrelLiDARScanner();
+    explicit KestrelLiDARScanner(const LiDARScannerConfig& inConfig);
 
     /**
      * Executes a full 360-degree point cloud sweep against the spatial Octree.
@@ -50,7 +51,7 @@ public:
              std::vector<LiDARPoint>& outPointCloud);
 
 private:
-    Config cfg;
+    LiDARScannerConfig cfg;
     std::mt19937 rng;
     std::normal_distribution<double> noiseDist{0.0, 1.0};
     std::vector<double> elevationAnglesRad;
