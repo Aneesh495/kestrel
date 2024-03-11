@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kestrel | Autonomous Avionics Telemetry & Mission Control</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <header class="top-nav">
+        <div class="brand">
+            <span class="logo-glyph">&#9670;</span>
+            <span class="logo-text">KESTREL</span>
+            <span class="tagline">AUTONOMOUS AVIONICS ENGINE</span>
+        </div>
+        <div class="system-status">
+            <div class="status-pill status-armed" id="statusArmed">ARMED</div>
+            <div class="status-pill status-mode" id="statusMode">GUIDED AUTONOMOUS</div>
+            <div class="metric-item">
+                <span class="metric-label">BATT</span>
+                <span class="metric-val" id="battPercent">94.8%</span>
+                <span class="metric-sub" id="battVoltage">15.8V</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">GNSS</span>
+                <span class="metric-val" id="gnssFix">RTK FIXED</span>
+                <span class="metric-sub" id="gnssSats">18 SATS</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">LATENCY</span>
+                <span class="metric-val" id="telemetryLatency">2.0 ms</span>
+                <span class="metric-sub">500 Hz</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="cockpit-grid">
+        <!-- Left: Primary Flight Display (PFD) -->
+        <section class="panel pfd-panel">
+            <div class="panel-header">
+                <h2>PRIMARY FLIGHT DISPLAY (PFD)</h2>
+                <span class="live-indicator">&#9679; LIVE</span>
+            </div>
+            <div class="canvas-container">
+                <canvas id="pfdCanvas" width="460" height="460"></canvas>
+            </div>
+            <div class="pfd-readouts">
+                <div class="readout-box">
+                    <span class="label">IAS</span>
+                    <span class="value" id="valIas">12.5 m/s</span>
+                </div>
+                <div class="readout-box">
+                    <span class="label">ALT (MSL)</span>
+                    <span class="value" id="valAlt">15.2 m</span>
+                </div>
+                <div class="readout-box">
+                    <span class="label">VSI</span>
+                    <span class="value" id="valVsi">+0.0 m/s</span>
+                </div>
+                <div class="readout-box">
+                    <span class="label">HDG</span>
+                    <span class="value" id="valHdg">034 deg</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Center: 3D Tactical Map & Trajectory -->
+        <section class="panel map-panel">
+            <div class="panel-header">
+                <h2>TACTICAL MISSION RADAR & TRAJECTORY</h2>
+                <div class="view-controls">
+                    <button class="btn-toggle active" id="btn2D">2D MAP</button>
+                    <button class="btn-toggle" id="btn3D">3D TRAJECTORY</button>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="tacticalCanvas" width="560" height="460"></canvas>
+            </div>
+            <div class="mission-controls">
+                <button class="action-btn" id="btnTakeoff">AUTO TAKEOFF</button>
+                <button class="action-btn" id="btnLoiter">LOITER HOLD</button>
+                <button class="action-btn" id="btnRTH">RETURN HOME</button>
+                <button class="action-btn" id="btnLand">LAND</button>
+                <button class="action-btn danger" id="btnCutoff">EMERGENCY CUTOFF</button>
+            </div>
+        </section>
+
+        <!-- Right: Actuators, Sensors, and Propulsion -->
+        <section class="panel telemetry-panel">
+            <div class="panel-header">
+                <h2>PROPULSION & SENSOR TELEMETRY</h2>
+            </div>
+            <div class="motor-grid">
+                <div class="motor-card">
+                    <span class="motor-label">M1 (FRONT-R)</span>
+                    <div class="progress-bar"><div class="progress-fill" id="m1Fill" style="width: 55%;"></div></div>
+                    <span class="motor-val" id="m1Val">55%</span>
+                </div>
+                <div class="motor-card">
+                    <span class="motor-label">M2 (REAR-L)</span>
+                    <div class="progress-bar"><div class="progress-fill" id="m2Fill" style="width: 58%;"></div></div>
+                    <span class="motor-val" id="m2Val">58%</span>
+                </div>
+                <div class="motor-card">
+                    <span class="motor-label">M3 (FRONT-L)</span>
+                    <div class="progress-bar"><div class="progress-fill" id="m3Fill" style="width: 56%;"></div></div>
+                    <span class="motor-val" id="m3Val">56%</span>
+                </div>
+                <div class="motor-card">
+                    <span class="motor-label">M4 (REAR-R)</span>
+                    <div class="progress-bar"><div class="progress-fill" id="m4Fill" style="width: 57%;"></div></div>
+                    <span class="motor-val" id="m4Val">57%</span>
+                </div>
+            </div>
+
+            <div class="sensor-readout-group">
+                <h3>9-DOF IMU READOUT</h3>
+                <div class="imu-row">
+                    <span class="axis-tag">ACCEL (g)</span>
+                    <span class="axis-val" id="accelX">+0.02</span>
+                    <span class="axis-val" id="accelY">-0.01</span>
+                    <span class="axis-val" id="accelZ">+1.01</span>
+                </div>
+                <div class="imu-row">
+                    <span class="axis-tag">GYRO (deg/s)</span>
+                    <span class="axis-val" id="gyroX">+0.4</span>
+                    <span class="axis-val" id="gyroY">-0.2</span>
+                    <span class="axis-val" id="gyroZ">+0.1</span>
+                </div>
+            </div>
+
+            <div class="telemetry-log-box" id="logBox">
+                <div class="log-entry">[00:00.00] Avionics BIT self-test complete: 100% PASS</div>
+                <div class="log-entry">[00:01.20] IMU zero-velocity calibration bias converged</div>
+                <div class="log-entry">[00:02.50] RTK-GNSS carrier phase locked: 18 satellites</div>
+                <div class="log-entry">[00:05.00] Reached cruising altitude 15.0m MSL</div>
+                <div class="log-entry active">[00:15.20] Waypoint 2 reached. Following 3D Dubins arc</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
