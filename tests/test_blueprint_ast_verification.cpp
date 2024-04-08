@@ -1,6 +1,7 @@
 #include "BlueprintParser.h"
 #include "BlueprintValidator.h"
 #include <iostream>
+#include <fstream>
 #include <cassert>
 #include <vector>
 #include <filesystem>
@@ -24,12 +25,22 @@ int main() {
         "Content/Blueprints/UI/BP_GroundControlStation_Widget.bp"
     };
 
+    std::string rootPrefix = "";
+    if (fs::exists("Content/Blueprints/BP_KestrelPawn.bp")) {
+        rootPrefix = "";
+    } else if (fs::exists("../Content/Blueprints/BP_KestrelPawn.bp")) {
+        rootPrefix = "../";
+    } else if (fs::exists("../../Content/Blueprints/BP_KestrelPawn.bp")) {
+        rootPrefix = "../../";
+    }
+
     size_t totalNodes = 0;
     size_t totalPins = 0;
     size_t totalWires = 0;
     size_t totalLines = 0;
 
-    for (const auto& filePath : bpFiles) {
+    for (const auto& relPath : bpFiles) {
+        std::string filePath = rootPrefix + relPath;
         assert(fs::exists(filePath));
 
         // Count lines

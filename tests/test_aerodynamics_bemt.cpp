@@ -34,9 +34,9 @@ void TestBEMTThrustScaling() {
 void TestGroundEffectMultiplier() {
     KestrelBladeElement bemt;
 
-    // In-ground-effect at 0.15m height (R = 0.127m -> z / R ~ 1.18)
-    double igeClose = bemt.ComputeGroundEffect(0.15);
-    assert(igeClose > 1.05 && igeClose < 1.45);
+    // In-ground-effect at 0.08m height (R = 0.127m, ratio ~ 0.397)
+    double igeClose = bemt.ComputeGroundEffect(0.08);
+    assert(igeClose > 1.10 && igeClose < 1.45);
 
     // Out-of-ground-effect at 5.0m height
     double igeFar = bemt.ComputeGroundEffect(5.0);
