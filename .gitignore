@@ -28,6 +28,8 @@ CMakeCache.txt
 *.dll
 *.a
 *.lib
+telemetry.csv
+telemetry.json
 
 # Python cache
 __pycache__/
