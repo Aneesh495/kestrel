@@ -45,7 +45,7 @@ class BPNode:
         self.name = name
         self.pos_x = pos_x
         self.pos_y = pos_y
-        self.comment = comment.replace("—", "-").replace("--", "-") # Strict zero em dash guarantee
+        self.comment = comment.replace("\u2014", "-").replace("\u2013", "-").replace("--", "-") # Strict zero em dash guarantee
         self.guid = make_guid()
         self.pins = []
         self.properties = {}
