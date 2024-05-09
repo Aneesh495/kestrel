@@ -340,3 +340,26 @@ body {
 .log-entry.active {
     color: var(--cyan);
 }
+
+.preview-context {
+  margin: 0;
+  padding: .6rem 1rem;
+  background: #121b27;
+  color: #d6e2ed;
+  font: 400 .85rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+.preview-context a { color: #9bdeff; }
+:focus-visible { outline: 3px solid #9bdeff; outline-offset: 2px; }
+
+.cockpit-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, .85fr); }
+.cockpit-grid > *, .canvas-container { min-width: 0; }
+.canvas-container canvas { max-width: 100%; height: auto; }
+.brand, .system-status, .top-nav, .panel-header, .view-controls { flex-wrap: wrap; gap: .6rem; }
+@media (max-width: 1050px) {
+  .cockpit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 690px) {
+  .cockpit-grid { grid-template-columns: minmax(0, 1fr); padding: .6rem; }
+  .pfd-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
